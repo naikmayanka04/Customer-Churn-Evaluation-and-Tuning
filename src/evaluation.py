@@ -59,7 +59,11 @@ def compute_metrics(y_true, y_pred, y_proba) -> dict:
 
 
 def evaluate_on(model, X, y, threshold: float = 0.5) -> tuple[dict, np.ndarray, np.ndarray]:
-    """Score a FITTED model. Returns (metrics, predicted_labels, churn_probabilities)."""
+    """Score a FITTED model. Returns (metrics, predicted_labels, churn_probabilities).
+
+    Can be called on training data too (to check for overfitting by comparing
+    against cross-validation and test scores), as well as validation/test data.
+    """
     proba = model.predict_proba(X)[:, 1]
     pred = (proba >= threshold).astype(int)
     return compute_metrics(y, pred, proba), pred, proba
