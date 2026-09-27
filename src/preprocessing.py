@@ -1,15 +1,9 @@
-"""Preprocessing pipeline and baseline model factories.
-
-All learned transformations (imputation statistics, scaling parameters, the set
-of known categories) live inside a scikit-learn Pipeline. Because the pipeline
-is fitted only on training data (and, inside cross-validation, only on each
-training fold), no information from validation or test data leaks into it.
-"""
 from __future__ import annotations
 
 import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.dummy import DummyClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
@@ -84,5 +78,33 @@ def build_logistic_class_weighted(X: pd.DataFrame) -> Pipeline:
         steps=[
             ("preprocess", build_preprocessor(X)),
             ("model", LogisticRegression(max_iter=1000, class_weight="balanced", random_state=RANDOM_STATE)),
+        ]
+    )
+
+
+def build_random_forest_class_weighted(X: pd.DataFrame) -> Pipeline:
+    """Random forest with class_weight='balanced_subsample'.
+
+    Uses the same preprocessing as the logistic models (scaling is unnecessary for
+    a tree-based model, but keeping it identical isolates the comparison in
+    Milestone 03 to the ALGORITHM, not the feature preparation). Depth and leaf
+    size are intentionally modest defaults, not tuned, to keep this a fair
+    "reasonable default vs. reasonable default" comparison rather than a
+    tuning exercise.
+    """
+    return Pipeline(
+        steps=[
+            ("preprocess", build_preprocessor(X)),
+            (
+                "model",
+                RandomForestClassifier(
+                    n_estimators=300,
+                    max_depth=8,
+                    min_samples_leaf=5,
+                    class_weight="balanced_subsample",
+                    random_state=RANDOM_STATE,
+                    n_jobs=-1,
+                ),
+            ),
         ]
     )
