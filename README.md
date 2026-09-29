@@ -112,8 +112,6 @@ The baseline clearly beats the dummy model on every metric that isn't fooled by 
 ## 6. Milestone 02 — Feature Engineering
 Reviewed the scaling (numeric) and encoding (categorical) choices from Milestone 01, confirmed the class imbalance (~27% churn in training data), and compared three strategies via cross-validation on the training set only: no adjustment, `class_weight="balanced"` logistic regression, and logistic regression on a randomly oversampled training fold (oversampling applied only within each CV fold, never across the train/validation boundary, to avoid leakage).
 
-> **[FILL IN from your own run of `python -m src.train_milestone02` or `reports/milestone02_metrics.json`]**
-
 | Metric (test set) | Milestone 01 baseline | Milestone 02 selected strategy: |class_weight="balanced|
 | --- | ---: | ---: |
 | Accuracy | 0.806 | |
