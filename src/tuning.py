@@ -1,10 +1,3 @@
-"""Hyperparameter search spaces for Milestone 04.
-
-Each grid is keyed to match the step name ("model") used inside the
-Pipelines built in `src/preprocessing.py`, e.g. build_logistic_class_weighted
-and build_random_forest_class_weighted both name their estimator step "model",
-so GridSearchCV parameter names are "model__<param>".
-"""
 from __future__ import annotations
 
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
